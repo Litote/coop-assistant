@@ -1,0 +1,29 @@
+# Local Odoo 18 Community for developing and testing coop_shopping_api.
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: odoo
+      POSTGRES_PASSWORD: odoo
+    volumes:
+      - db-data:/var/lib/postgresql/data
+  odoo:
+    image: odoo:18.0
+    depends_on:
+      - db
+    # One fixed database, so that unauthenticated routes know which one to serve.
+    command: odoo -d dev --db-filter=^dev$
+    ports:
+      - "8069:8069"
+    environment:
+      HOST: db
+      USER: odoo
+      PASSWORD: odoo
+    volumes:
+      - ./addons:/mnt/extra-addons:ro
+      - ./seed:/mnt/seed:ro
+      - odoo-data:/var/lib/odoo
+volumes:
+  db-data:
+  odoo-data:

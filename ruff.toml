@@ -1,0 +1,7 @@
+line-length = 120
+
+[lint.per-file-ignores]
+# Odoo loads modules through these imports.
+"__init__.py" = ["F401"]
+# An Odoo manifest is a bare dictionary.
+"__manifest__.py" = ["B018"]
